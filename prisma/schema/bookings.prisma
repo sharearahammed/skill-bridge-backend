@@ -1,0 +1,19 @@
+model Booking {
+  id          Int       @id @default(autoincrement())
+  studentId   Int
+  tutorId     Int
+  startTime   DateTime
+  endTime     DateTime
+  status      BookingStatus @default(CONFIRMED)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  student     User       @relation("StudentBookings", fields: [studentId], references: [id])
+  tutor       TutorProfile @relation("TutorBookings", fields: [tutorId], references: [id])
+}
+
+enum BookingStatus {
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}

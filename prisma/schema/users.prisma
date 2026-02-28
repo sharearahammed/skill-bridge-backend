@@ -1,0 +1,25 @@
+model User {
+  id          Int       @id @default(autoincrement())
+  name        String
+  email       String    @unique
+  password    String
+  role        UserRole
+  status      UserStatus @default(ACTIVE)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  tutorProfile TutorProfile?
+  bookingsAsStudent Booking[] @relation("StudentBookings")
+  reviews   Review[]
+}
+
+enum UserRole {
+  STUDENT
+  TUTOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  BANNED
+}

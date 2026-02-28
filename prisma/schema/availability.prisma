@@ -1,0 +1,9 @@
+model Availability {
+  id         Int       @id @default(autoincrement())
+  tutorId    Int
+  dayOfWeek  Int       // 0=Sunday, 1=Monday...
+  startTime  String    // '14:00'
+  endTime    String    // '16:00'
+
+  tutor      TutorProfile @relation(fields: [tutorId], references: [id])
+}
