@@ -13,7 +13,7 @@ router.post(
 );
 
 router.post("/slot", authMiddleware(UserRole.TUTOR), TutorsController.createSlot);
-router.get("/slot", authMiddleware(UserRole.TUTOR), TutorsController.getSlots);
+router.get("/slot/all", authMiddleware(UserRole.TUTOR), TutorsController.getSlots);
 router.put("/slot/:id", authMiddleware(UserRole.TUTOR), TutorsController.updateSlot);
 router.delete(
   "/slot/:id",

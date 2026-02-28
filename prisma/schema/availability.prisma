@@ -1,11 +1,17 @@
 model Availability {
-  id        Int      @id @default(autoincrement())
-  tutor     TutorProfile @relation(fields: [tutorId], references: [id])
+  id String @id @default(cuid())
+
   tutorId   String
+  subjectId String
+
+  tutor   TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  subject Category     @relation(fields: [subjectId], references: [id])
+
   startTime DateTime
   endTime   DateTime
+
+  bookings Booking[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@map("Availability")
 }

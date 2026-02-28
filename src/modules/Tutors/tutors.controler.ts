@@ -45,8 +45,7 @@ const getTutorProfile = async (req: Request, res: Response) => {
 
 const createSlot = async (req: Request, res: Response) => {
   try {
-    const tutorId = req.user!.id; // authMiddleware required
-    console.log("tutorId", tutorId);
+    const tutorId = req.user!.id;
     const input: AvailabilityInput = req.body;
     const slot = await TutorsService.createSlot(tutorId, input);
     res.status(201).json({ success: true, data: slot });

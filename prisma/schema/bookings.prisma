@@ -1,18 +1,24 @@
 model Booking {
-  id Int @id @default(autoincrement())
+  id String @id @default(cuid())
 
   studentId String
   tutorId   String
 
+  availabilityId String
+
   startTime DateTime
   endTime   DateTime
-  status    BookingStatus @default(CONFIRMED)
+
+  status BookingStatus @default(CONFIRMED)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  student User         @relation("StudentBookings", fields: [studentId], references: [id])
-  tutor   TutorProfile @relation("TutorBookings", fields: [tutorId], references: [id])
+  student      User         @relation("StudentBookings", fields: [studentId], references: [id])
+  tutor        TutorProfile @relation("TutorBookings", fields: [tutorId], references: [id])
+  availability Availability @relation(fields: [availabilityId], references: [id])
+
+  @@unique([availabilityId])
 }
 
 enum BookingStatus {

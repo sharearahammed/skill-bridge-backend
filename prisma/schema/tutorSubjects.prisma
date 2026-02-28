@@ -1,0 +1,13 @@
+model TutorSubject {
+  id String @id @default(cuid())
+
+  tutorId    String
+  categoryId String
+
+  tutor    TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  category Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([tutorId, categoryId])
+}

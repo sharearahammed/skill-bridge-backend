@@ -2,7 +2,6 @@ export interface TutorProfileInput {
   bio?: string;          // optional
   pricePerHour: number;  // required
   experience: number;    // required
-  categoryId: number;    // required
 }
 
 export interface AvailabilityInput {

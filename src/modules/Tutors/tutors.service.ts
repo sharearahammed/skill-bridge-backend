@@ -1,3 +1,4 @@
+import { Prisma } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 import {
   AvailabilityInput,
@@ -8,27 +9,34 @@ import {
 // Create or update tutor profile
 const createOrUpdateProfile = async (
   userId: string,
-  input: TutorProfileInput,
+  input: TutorProfileInput
 ) => {
   const existing = await prisma.tutorProfile.findUnique({
     where: { userId },
   });
 
+  const data: Prisma.TutorProfileCreateInput = {
+    user: { connect: { id: userId } },
+    bio: input.bio ?? null,         // undefined -> null
+    pricePerHour: input.pricePerHour,
+    experience: input.experience,   // required Int
+    rating: 0,
+  };
+
   if (existing) {
     // update
     return prisma.tutorProfile.update({
       where: { userId },
-      data: input,
+      data: {
+        bio: input.bio ?? null,
+        pricePerHour: input.pricePerHour,
+        experience: input.experience,
+      },
     });
   }
 
   // create
-  return prisma.tutorProfile.create({
-    data: {
-      userId,
-      ...input,
-    },
-  });
+  return prisma.tutorProfile.create({ data });
 };
 
 // Get all tutors with optional filters
@@ -76,7 +84,6 @@ const getTutorProfileIdByUser = async (userId: string) => {
 
 const createSlot = async (userId: string, input: AvailabilityInput) => {
   const tutorId = await getTutorProfileIdByUser(userId);
-  console.log("tutorId", tutorId);
   return prisma.availability.create({
     data: {
       tutorId,
@@ -86,11 +93,18 @@ const createSlot = async (userId: string, input: AvailabilityInput) => {
   });
 };
 
-const getSlots = async (tutorId: string) => {
-  // return prisma.availability.findMany({
-  //   where: { tutorId },
-  //   orderBy: { startTime: "asc" },
-  // });
+const getSlots = async (userId: string) => {
+  const tutorId = await getTutorProfileIdByUser(userId);
+
+  const slots = await prisma.availability.findMany({
+    where: { tutorId },
+    orderBy: { startTime: "asc" },
+  });
+
+  return slots.map(({ tutorId, ...slot }) => ({
+    ...slot,
+    tutorId: String(tutorId),
+  }));
 };
 
 const deleteSlot = async (id: string) => {

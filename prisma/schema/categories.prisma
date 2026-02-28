@@ -1,7 +1,7 @@
 model Category {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  tutors    TutorProfile[] 
+  id   String @id @default(cuid())
+  name String @unique
 
-  @@map("Category")
+  tutorSubjects TutorSubject[]   // ← opposite relation
+  availability  Availability[]   // optional, for availability
 }
