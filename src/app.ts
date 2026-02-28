@@ -2,6 +2,8 @@ import express, { Application } from "express";
 import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth";
 import cors from "cors";
+import { tutorsRouter } from "./modules/Tutors/tutors.router";
+import { adminRouter } from "./modules/Admin/admin.router";
 
 
 const app: Application = express();
@@ -22,6 +24,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.use("/tutors", tutorsRouter);
+app.use("/admin", adminRouter);
 
 
 

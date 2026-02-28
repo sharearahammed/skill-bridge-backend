@@ -22,6 +22,7 @@ declare global {
 }
 
 const authMiddleware = (...roles: UserRole[]) => {
+  console.log(roles);
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       //get user session from better-auth

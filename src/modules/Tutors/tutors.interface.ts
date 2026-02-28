@@ -1,14 +1,13 @@
 export interface TutorProfileInput {
-  bio: string;
-  hourlyRate: number;
-  experience: number;
-  categoryId?: string;
+  bio?: string;          // optional
+  pricePerHour: number;  // required
+  experience: number;    // required
+  categoryId: number;    // required
 }
 
-export interface TutorAvailabilityInput {
-  dayOfWeek: number; // 0-6
-  startTime: Date;
-  endTime: Date;
+export interface AvailabilityInput {
+  startTime: string;
+  endTime: string;
 }
 
 export interface TutorFilters {

@@ -1,16 +1,17 @@
 model TutorProfile {
-  id          Int       @id @default(autoincrement())
-  userId      Int       @unique
-  bio         String?
+  id           String  @id @default(uuid())
+  userId       String  @unique
+  bio          String?
   pricePerHour Float
-  rating      Float     @default(0)
-  categoryId  Int
+  rating       Float   @default(0)
+  categoryId   Int
 
-  user        User      @relation(fields: [userId], references: [id])
-  category    Category  @relation(fields: [categoryId], references: [id])
+  user         User           @relation(fields: [userId], references: [id])
+  category     Category       @relation(fields: [categoryId], references: [id])
   availability Availability[]
-  bookings     Booking[] @relation("TutorBookings")
+  bookings     Booking[]      @relation("TutorBookings")
   reviews      Review[]
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
