@@ -7,7 +7,7 @@ const createBooking = async (req: Request, res: Response) => {
   try {
     const booking = await BookingService.createBooking(
       studentId,
-      req.body.availabilityId
+      req.body.availabilityId,
     );
     res.json({ success: true, data: booking });
   } catch (err: any) {
@@ -32,11 +32,14 @@ const getTutorBookings = async (req: Request, res: Response) => {
 // Update booking status (Admin or Tutor)
 const updateBookingStatus = async (req: Request, res: Response) => {
   const { bookingId, status } = req.body;
-  const booking = await BookingService.updateBookingStatus(
-    bookingId,
-    status
-  );
+  const booking = await BookingService.updateBookingStatus(bookingId, status);
   res.json({ success: true, data: booking });
+};
+
+const myBookings = async (req: Request, res: Response) => {
+  const userId = req.user!.id;
+  const bookings = await BookingService.getUserBookings(userId);
+  res.json({ success: true, data: bookings });
 };
 
 export const BookingController = {
@@ -44,4 +47,5 @@ export const BookingController = {
   getStudentBookings,
   getTutorBookings,
   updateBookingStatus,
+  myBookings
 };

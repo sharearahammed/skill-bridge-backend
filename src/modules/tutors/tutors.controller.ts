@@ -47,7 +47,13 @@ const getTutorProfile = async (req: Request, res: Response) => {
   }
 };
 
+const getFeaturedTutors = async (req: Request, res: Response) => {
+  const tutors = await TutorsService.getFeaturedTutors();
+  res.json({ success: true, data: tutors });
+};
+
 export const TutorsController = {
   getAllTutors,
   getTutorProfile,
+  getFeaturedTutors,
 };

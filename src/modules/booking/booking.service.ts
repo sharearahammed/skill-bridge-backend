@@ -1,7 +1,6 @@
 import { BookingStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
-
 // Create a booking
 const createBooking = async (studentId: string, availabilityId: string) => {
   // Check if slot exists
@@ -55,11 +54,19 @@ const getTutorBookings = async (tutorId: string) => {
 // Update booking status
 const updateBookingStatus = async (
   bookingId: string,
-  status: BookingStatus
+  status: BookingStatus,
 ) => {
   return prisma.booking.update({
     where: { id: bookingId },
     data: { status },
+  });
+};
+
+const getUserBookings = async (userId: string) => {
+  return prisma.booking.findMany({
+    where: { studentId: userId },
+    include: { tutor: { include: { user: true } }, availability: true },
+    orderBy: { startTime: "asc" },
   });
 };
 
@@ -68,4 +75,5 @@ export const BookingService = {
   getStudentBookings,
   getTutorBookings,
   updateBookingStatus,
+  getUserBookings
 };

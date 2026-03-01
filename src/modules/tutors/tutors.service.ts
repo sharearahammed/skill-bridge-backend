@@ -57,7 +57,16 @@ const getTutorProfile = async (tutorId: string) => {
   return tutor;
 };
 
+const getFeaturedTutors = async () => {
+  return prisma.tutorProfile.findMany({
+    take: 5,
+    orderBy: { rating: "desc" },
+    include: { user: true, reviews: true },
+  });
+};
+
 export const TutorsService = {
   getAllTutors,
   getTutorProfile,
+  getFeaturedTutors,
 };

@@ -9,5 +9,11 @@ router.post(
   authMiddleware(UserRole.TUTOR),
   TutorController.createOrUpdateProfile,
 );
+router.post(
+  "/availability",
+  authMiddleware(UserRole.TUTOR, UserRole.STUDENT),
+  TutorController.createAvailability,
+);
+router.get("/sessions", authMiddleware(UserRole.TUTOR, UserRole.STUDENT), TutorController.getTutorSessions);
 
 export const tutorRouter: Router = router;

@@ -18,4 +18,7 @@ router.get("/tutor",authMiddleware(UserRole.STUDENT, UserRole.ADMIN, UserRole.TU
 // Admin/Tutor update
 router.patch("/status",authMiddleware(UserRole.STUDENT, UserRole.ADMIN, UserRole.TUTOR), BookingController.updateBookingStatus);
 
+// my booking
+router.get("/my-booking", authMiddleware(UserRole.STUDENT, UserRole.ADMIN, UserRole.TUTOR), BookingController.myBookings);
+
 export const BookingRouter: Router = router;

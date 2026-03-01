@@ -7,5 +7,6 @@ const router = Router();
 // Public browsing - students can view tutors without login
 router.get("/", TutorsController.getAllTutors);
 router.get("/:id", TutorsController.getTutorProfile);
+router.get("/featured/tutor", TutorsController.getFeaturedTutors);
 
 export const tutorsRouter: Router = router;
