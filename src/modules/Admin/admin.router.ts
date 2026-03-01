@@ -1,17 +1,18 @@
+// admin.router.ts
 import { Router } from "express";
-import authMiddleware, { UserRole } from "../../lib/middlewares/auth";
-import { CategoriesController } from "./admin.controler";
+import { AdminController } from "./admin.controler";
+
 
 const router = Router();
 
-// Only admin can create category
-router.post(
-  "/add-Categories",
-//   authMiddleware(UserRole.ADMIN), 
-  CategoriesController.createCategory
-);
+// All routes protected, only admin access
 
-// Public: get all categories
-router.get("/all-Categories", CategoriesController.getAllCategories);
+router.get("/users", AdminController.getAllUsers);
+router.patch("/user/:id/status", AdminController.updateUserStatus);
+
+router.get("/bookings", AdminController.getAllBookings);
+
+router.get("/categories", AdminController.getAllCategories);
+router.post("/category", AdminController.createCategory);
 
 export const adminRouter: Router = router;

@@ -1,26 +1,58 @@
+// admin.service.ts
+
 import { prisma } from "../../lib/prisma";
-import { AvailabilityInput } from "../Tutors/tutors.interface";
 
-export interface CategoryInput {
-  name: string;
-}
-
-const createCategory = async (inputs: CategoryInput[]) => {
-  return prisma.category.createMany({
-    data: inputs,
-    skipDuplicates: true,
+// Users
+const getAllUsers = () => {
+  return prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 };
 
-const getAllCategories = async () => {
-  return prisma.category.findMany({
-    orderBy: { name: "asc" },
+const updateUserStatus = (userId: string, status: "ACTIVE" | "BANNED") => {
+  return prisma.user.update({
+    where: { id: userId },
+    data: { status },
   });
 };
 
+// Bookings
+const getAllBookings = () => {
+  return prisma.booking.findMany({
+    include: {
+      student: { select: { id: true, name: true, email: true } },
+      tutor: {
+        select: { id: true, user: { select: { name: true, email: true } } },
+      },
+      availability: true,
+    },
+    orderBy: { startTime: "desc" },
+  });
+};
 
+// Categories
+const getAllCategories = () => {
+  return prisma.category.findMany();
+};
 
-export const CategoriesService = {
-  createCategory,
+const createCategory = (input: { name: string }) => {
+  return prisma.category.create({
+    data: input,
+  });
+};
+
+export const AdminService = {
+  getAllUsers,
   getAllCategories,
+  createCategory,
+  getAllBookings,
+  updateUserStatus,
 };

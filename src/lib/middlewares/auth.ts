@@ -36,12 +36,12 @@ const authMiddleware = (...roles: UserRole[]) => {
           .json({ success: false, message: "Unauthorized" });
       }
 
-      if (!session.user.emailVerified) {
-        return res.status(403).json({
-          success: false,
-          message: "Email Verification Required.Please verify your email!",
-        });
-      }
+      // if (!session.user.emailVerified) {
+      //   return res.status(403).json({
+      //     success: false,
+      //     message: "Email Verification Required.Please verify your email!",
+      //   });
+      // }
 
       req.user = {
         id: session.user.id,
