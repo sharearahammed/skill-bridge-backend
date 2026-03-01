@@ -5,7 +5,7 @@ model Review {
   tutorId   String
 
   student User @relation(fields: [studentId], references: [id])
-  tutor   TutorProfile @relation(fields: [tutorId], references: [id])
+  tutor   TutorProfile @relation(fields: [tutorId], references: [userId])
 
   rating  Int
   comment String?
@@ -14,4 +14,4 @@ model Review {
   updatedAt DateTime @updatedAt
 
   @@unique([studentId, tutorId])
-}
+} 

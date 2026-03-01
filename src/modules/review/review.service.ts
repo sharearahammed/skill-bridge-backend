@@ -15,6 +15,10 @@ const createReview = async (
       status: "COMPLETED",
     },
   });
+  
+  console.log({ studentId, tutorId });
+  console.log("booking", booking);
+
   if (!booking)
     throw new Error("Cannot review tutor without a completed booking");
 

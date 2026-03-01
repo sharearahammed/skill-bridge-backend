@@ -7,8 +7,8 @@ const router = express.Router();
 // Student add review
 router.post(
   "/",
-//   authMiddleware(UserRole.STUDENT),
-  authMiddleware(UserRole.TUTOR),
+  authMiddleware(UserRole.STUDENT),
+  // authMiddleware(UserRole.TUTOR),
   ReviewController.createReview,
 );
 

@@ -4,7 +4,7 @@ model Availability {
   tutorId   String
   subjectId String
 
-  tutor   TutorProfile @relation(fields: [tutorId], references: [id], onDelete: Cascade)
+  tutor   TutorProfile @relation(fields: [tutorId], references: [userId], onDelete: Cascade)
   subject Category     @relation(fields: [subjectId], references: [id])
 
   startTime DateTime

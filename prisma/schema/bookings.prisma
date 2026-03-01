@@ -15,7 +15,7 @@ model Booking {
   updatedAt DateTime @updatedAt
 
   student      User         @relation("StudentBookings", fields: [studentId], references: [id])
-  tutor        TutorProfile @relation("TutorBookings", fields: [tutorId], references: [id])
+  tutor        TutorProfile @relation("TutorBookings", fields: [tutorId], references: [userId])
   availability Availability @relation(fields: [availabilityId], references: [id])
 
   @@unique([availabilityId])

@@ -7,6 +7,7 @@ const createBooking = async (studentId: string, availabilityId: string) => {
   const slot = await prisma.availability.findUnique({
     where: { id: availabilityId },
   });
+  console.log({ slot });
   if (!slot) throw new Error("Slot not found");
 
   // Prevent double booking
@@ -75,5 +76,5 @@ export const BookingService = {
   getStudentBookings,
   getTutorBookings,
   updateBookingStatus,
-  getUserBookings
+  getUserBookings,
 };

@@ -43,6 +43,14 @@ const authMiddleware = (...roles: UserRole[]) => {
       //   });
       // }
 
+      // Check user status
+      if (session.user.status !== "ACTIVE") {
+        return res.status(403).json({
+          success: false,
+          message: "Your account is not active. Contact admin.",
+        });
+      }
+
       req.user = {
         id: session.user.id,
         email: session.user.email,
