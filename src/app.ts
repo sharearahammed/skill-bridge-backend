@@ -34,7 +34,7 @@ app.use("/category", CategoryRouter);
 app.use("/tutor", tutorRouter);
 app.use("/tutorSubject", tutorSubjectRouter);
 app.use("/slot", availableRouter);
-// app.use("/booking", BookingRouter);
+app.use("/booking", BookingRouter);
 app.use("/review", reviewRouter);
 
 
