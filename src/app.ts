@@ -29,7 +29,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// app.use("/admin", adminRouter);
+app.use("/admin", adminRouter);
 app.use("/category", CategoryRouter);
 app.use("/tutor", tutorRouter);
 app.use("/tutorSubject", tutorSubjectRouter);
