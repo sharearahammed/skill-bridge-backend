@@ -87,6 +87,7 @@ const createSlot = async (userId: string, input: AvailabilityInput) => {
   return prisma.availability.create({
     data: {
       tutorId,
+      subjectId: input.subjectId,
       startTime: new Date(input.startTime),
       endTime: new Date(input.endTime),
     },

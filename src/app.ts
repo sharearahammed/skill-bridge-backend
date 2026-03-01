@@ -4,6 +4,7 @@ import { auth } from "./lib/auth";
 import cors from "cors";
 import { tutorsRouter } from "./modules/Tutors/tutors.router";
 import { adminRouter } from "./modules/Admin/admin.router";
+import { CategoryRouter } from "./modules/category/category.route";
 
 
 const app: Application = express();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 
 app.use("/tutors", tutorsRouter);
 app.use("/admin", adminRouter);
+app.use("/category", CategoryRouter);
 
 
 

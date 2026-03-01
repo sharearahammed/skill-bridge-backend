@@ -1,6 +1,7 @@
 model Category {
   id   String @id @default(cuid())
   name String @unique
+  createdAt DateTime @default(now())
 
   tutorSubjects TutorSubject[]   // ← opposite relation
   availability  Availability[]   // optional, for availability

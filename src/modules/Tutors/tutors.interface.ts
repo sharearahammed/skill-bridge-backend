@@ -5,6 +5,7 @@ export interface TutorProfileInput {
 }
 
 export interface AvailabilityInput {
+  subjectId: string;
   startTime: string;
   endTime: string;
 }
