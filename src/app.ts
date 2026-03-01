@@ -9,6 +9,7 @@ import { availableRouter } from "./modules/availability/availability.router";
 import { BookingRouter } from "./modules/booking/booking.router";
 import { reviewRouter } from "./modules/review/review.route";
 import { adminRouter } from "./modules/admin/admin.router";
+import { tutorsRouter } from "./modules/tutors/tutors.router";
 
 
 const app: Application = express();
@@ -36,6 +37,7 @@ app.use("/tutorSubject", tutorSubjectRouter);
 app.use("/slot", availableRouter);
 app.use("/booking", BookingRouter);
 app.use("/review", reviewRouter);
+app.use("/allTutors", tutorsRouter);
 
 
 
