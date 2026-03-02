@@ -45,30 +45,10 @@ export const auth = betterAuth({
       },
     },
   },
-  // emailAndPassword: {
-  //   enabled: true,
-  //   autoSignIn: false,
-  //   requireEmailVerification: false,
-  // },
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
     requireEmailVerification: false,
-
-    // ✅ Sign-in hook: blocked users cannot login
-   signIn: async ({ user }: { user: AuthUser }) => {
-      const dbUser = await prisma.user.findUnique({
-        where: { id: user.id },
-        select: { status: true },
-      });
-
-      if (!dbUser || dbUser.status !== "ACTIVE") {
-        // banned or missing user → block login
-        throw new Error("Your account is banned or inactive");
-      }
-
-      return user; // allow login
-    },
   },
   //   emailVerification: {
   //     sendOnSignUp: true,
