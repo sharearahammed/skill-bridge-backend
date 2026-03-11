@@ -80,10 +80,42 @@ const updateReview = async (req: Request, res: Response) => {
 };
 
 // Get all reviews of a tutor
-const getTutorReviews = async (req: Request, res: Response) => {
-  const tutorId = req.params.tutorId as string;
-  const reviews = await ReviewService.getTutorReviews(tutorId);
-  res.json({ success: true, data: reviews });
+const getTutorReviewsByCategory = async (req: Request, res: Response) => {
+  try {
+    let { tutorId, categoryId } = req.params;
+
+    // Validate undefined
+    if (!tutorId || !categoryId) {
+      return res.status(400).json({
+        success: false,
+        message: "tutorId and categoryId are required",
+      });
+    }
+
+    // Handle array case if someone sends multiple params
+    if (Array.isArray(tutorId)) tutorId = tutorId[0];
+    if (Array.isArray(categoryId)) categoryId = categoryId[0];
+
+    // Explicitly assert as string so TS knows it's not undefined
+    const parsedTutorId: string = tutorId as string;
+    const parsedCategoryId: string = categoryId as string;
+
+    const reviews = await ReviewService.getTutorReviewsByCategory(
+      parsedTutorId,
+      parsedCategoryId,
+    );
+
+    res.json({ success: true, data: reviews });
+  } catch (err: unknown) {
+    console.error(err);
+    if (err instanceof Error) {
+      res.status(500).json({ success: false, message: err.message });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  }
 };
 
 // Get a review by student and category
@@ -146,7 +178,7 @@ const getReviewById = async (req: Request, res: Response) => {
 export const ReviewController = {
   createReview,
   updateReview,
-  getTutorReviews,
+  getTutorReviewsByCategory,
   // getStudentReview,
   getReviewById,
 };

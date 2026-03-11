@@ -63,10 +63,15 @@ const updateReview = async (
 };
 
 // Get reviews of a tutor
-const getTutorReviews = async (tutorId: string) => {
+const getTutorReviewsByCategory = async (tutorId: string, categoryId: string) => {
   return prisma.review.findMany({
-    where: { tutorId },
-    include: { student: { select: { id: true, name: true } } },
+    where: {
+      tutorId,
+      categoryId, // filter by category
+    },
+    include: {
+      student: { select: { id: true, name: true, email: true, image: true } },
+    },
     orderBy: { createdAt: "desc" },
   });
 };
@@ -103,7 +108,7 @@ const getReviewById = async (reviewId: string) => {
 export const ReviewService = {
   createReview,
   updateReview,
-  getTutorReviews,
+  getTutorReviewsByCategory,
   // getStudentReview,
   getReviewById
 };

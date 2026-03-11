@@ -14,6 +14,13 @@ router.post(
   authMiddleware(UserRole.TUTOR, UserRole.STUDENT),
   TutorController.createAvailability,
 );
+
 router.get("/sessions", authMiddleware(UserRole.TUTOR, UserRole.STUDENT), TutorController.getTutorSessions);
+
+router.get(
+  "/tutor/:tutorId/category/:categoryId/reviews",
+  authMiddleware(UserRole.TUTOR),
+  TutorController.getTutorReviews
+);
 
 export const tutorRouter: Router = router;

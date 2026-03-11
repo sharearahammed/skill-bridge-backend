@@ -20,8 +20,44 @@ const getTutorSessions = async (req: Request, res: Response) => {
   res.json({ success: true, data: sessions });
 };
 
+const getTutorReviews = async (req: Request, res: Response) => {
+  try {
+    let { tutorId, categoryId } = req.params;
+
+    // Handle string[] case if any
+    if (Array.isArray(tutorId)) tutorId = tutorId[0];
+    if (Array.isArray(categoryId)) categoryId = categoryId[0];
+
+    if (!tutorId || !categoryId) {
+      return res
+        .status(400)
+        .json({
+          success: false,
+          message: "tutorId and categoryId are required",
+        });
+    }
+
+    const reviews = await TutorService.getTutorReviewsByCategory(
+      tutorId,
+      categoryId,
+    );
+
+    res.json({ success: true, data: reviews });
+  } catch (err: unknown) {
+    console.error(err);
+    if (err instanceof Error) {
+      res.status(500).json({ success: false, message: err.message });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "Internal server error" });
+    }
+  }
+};
+
 export const TutorController = {
   createOrUpdateProfile,
   createAvailability,
   getTutorSessions,
+  getTutorReviews,
 };

@@ -67,7 +67,6 @@ const createAvailability = async (userId: string, input: any) => {
 const getTutorSessions = async (userId: string) => {
   const tutor = await prisma.tutorProfile.findUnique({ where: { userId } });
   if (!tutor) throw new Error("Tutor profile not found");
-  console.log("tutor", tutor);
   return prisma.booking.findMany({
     where: { tutorId: tutor.userId },
     include: { student: true, availability: true },
@@ -75,8 +74,24 @@ const getTutorSessions = async (userId: string) => {
   });
 };
 
+const getTutorReviewsByCategory = async (tutorId: string, categoryId: string) => {
+  return prisma.review.findMany({
+    where: {
+      tutorId,
+      categoryId,
+    },
+    include: {
+      student: {
+        select: { id: true, name: true, email: true, image: true },
+      },
+    },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
 export const TutorService = {
   createOrUpdateProfile,
   createAvailability,
   getTutorSessions,
+  getTutorReviewsByCategory
 };

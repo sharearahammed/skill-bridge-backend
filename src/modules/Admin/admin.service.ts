@@ -7,6 +7,7 @@ const getAllUsers = () => {
   return prisma.user.findMany({
     select: {
       id: true,
+      image: true,
       name: true,
       email: true,
       role: true,
