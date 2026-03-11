@@ -29,7 +29,7 @@ const authMiddleware = (...roles: UserRole[]) => {
       const session = await betterAuth.api.getSession({
         headers: req.headers as any,
       });
-
+      console.log(session);
       if (!session || !session.user) {
         return res
           .status(401)

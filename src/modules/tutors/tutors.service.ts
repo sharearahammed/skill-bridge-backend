@@ -32,7 +32,6 @@ const getAllTutors = async (filters: TutorFilters) => {
 };
 
 const getTutorProfile = async (tutorId: string) => {
-  console.log("tutorId", tutorId);
   const tutor = await prisma.tutorProfile.findUnique({
     where: { userId: tutorId },
     include: {
@@ -53,16 +52,58 @@ const getTutorProfile = async (tutorId: string) => {
     },
   });
 
-  if (!tutor) throw new Error("Tutor not found");
+  if (!tutor) {
+    return null;
+  }
+
   return tutor;
 };
 
 const getFeaturedTutors = async () => {
-  return prisma.tutorProfile.findMany({
+  const tutors = await prisma.tutorProfile.findMany({
     take: 5,
+    where: {
+      user: {
+        role: "TUTOR",
+        status: "ACTIVE",
+      },
+    },
     orderBy: { rating: "desc" },
-    include: { user: true, reviews: true },
+    include: {
+      user: {
+        select: { id: true, name: true, image: true },
+      },
+      tutorSubjects: {
+        include: {
+          category: {
+            select: { id: true, name: true },
+          },
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+          studentId: true,
+          tutorId: true,
+          rating: true,
+          comment: true,
+          createdAt: true,
+        },
+      },
+      _count: { select: { reviews: true } },
+    },
   });
+
+  return tutors.map((tutor) => ({
+    id: tutor.id,
+    bio: tutor.bio,
+    rating: tutor.rating,
+    pricePerHour: tutor.pricePerHour,
+    user: tutor.user,
+    reviews: tutor.reviews,
+    reviewCount: tutor._count.reviews,
+    category: tutor.tutorSubjects,
+  }));
 };
 
 export const TutorsService = {

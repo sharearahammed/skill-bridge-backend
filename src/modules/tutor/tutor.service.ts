@@ -3,11 +3,29 @@ import { prisma } from "../../lib/prisma";
 const createOrUpdateProfile = async (
   userId: string,
   input: {
+    name?: string;
+    email?: string;
+    image?: string;
     bio?: string;
     pricePerHour: number;
     experience: number;
   },
 ) => {
+  // Prepare user update object dynamically
+  const userData: { name?: string; email?: string; image?: string } = {};
+  if (input.name) userData.name = input.name;
+  if (input.email) userData.email = input.email;
+  if (input.image) userData.image = input.image;
+
+  // Update User only if at least one field is provided
+  if (Object.keys(userData).length > 0) {
+    await prisma.user.update({
+      where: { id: userId },
+      data: userData,
+    });
+  }
+
+  // Check if tutor profile exists
   const existing = await prisma.tutorProfile.findUnique({
     where: { userId },
   });
@@ -38,7 +56,7 @@ const createAvailability = async (userId: string, input: any) => {
   if (!tutor) throw new Error("Tutor profile not found");
   return prisma.availability.create({
     data: {
-      tutorId: tutor.id,
+      tutorId: tutor.userId,
       subjectId: input.subjectId,
       startTime: new Date(input.startTime),
       endTime: new Date(input.endTime),
@@ -49,8 +67,9 @@ const createAvailability = async (userId: string, input: any) => {
 const getTutorSessions = async (userId: string) => {
   const tutor = await prisma.tutorProfile.findUnique({ where: { userId } });
   if (!tutor) throw new Error("Tutor profile not found");
+  console.log("tutor", tutor);
   return prisma.booking.findMany({
-    where: { tutorId: tutor.id },
+    where: { tutorId: tutor.userId },
     include: { student: true, availability: true },
     orderBy: { startTime: "asc" },
   });

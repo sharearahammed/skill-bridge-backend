@@ -4,10 +4,10 @@ import { prisma } from "../../lib/prisma";
 const createReview = async (
   studentId: string,
   tutorId: string,
+  categoryId: string,
   rating: number,
   comment?: string,
 ) => {
-  // Ensure student booked the tutor
   const booking = await prisma.booking.findFirst({
     where: {
       studentId,
@@ -15,21 +15,50 @@ const createReview = async (
       status: "COMPLETED",
     },
   });
-  
-  console.log({ studentId, tutorId });
-  console.log("booking", booking);
 
-  if (!booking)
+  if (!booking) {
     throw new Error("Cannot review tutor without a completed booking");
+  }
 
-  // Prevent duplicate review
-  const existing = await prisma.review.findUnique({
-    where: { studentId_tutorId: { studentId, tutorId } },
+  const existing = await prisma.review.findFirst({
+    where: {
+      studentId,
+      tutorId,
+      categoryId,
+    },
   });
-  if (existing) throw new Error("You already reviewed this tutor");
+
+  if (existing) {
+    throw new Error("You already reviewed this subject for this tutor");
+  }
 
   return prisma.review.create({
-    data: { studentId, tutorId, rating, comment: comment ?? null },
+    data: {
+      studentId,
+      tutorId,
+      categoryId,
+      rating,
+      comment: comment ?? null,
+    },
+  });
+};
+
+// Update review
+const updateReview = async (
+  studentId: string,
+  reviewId: string,
+  rating: number,
+  comment?: string,
+) => {
+  return prisma.review.updateMany({
+    where: {
+      id: reviewId,
+      studentId,
+    },
+    data: {
+      rating,
+      comment: comment || null,
+    },
   });
 };
 
@@ -42,4 +71,39 @@ const getTutorReviews = async (tutorId: string) => {
   });
 };
 
-export const ReviewService = { createReview, getTutorReviews };
+// Get a single review by reviewId
+const getReviewById = async (reviewId: string) => {
+  return prisma.review.findUnique({
+    where: {
+      id: reviewId,
+    },
+    include: {
+      tutor: {
+        select: {
+          userId: true,
+          user: {
+            select: {
+              name: true,
+              email: true,
+              image: true,
+            },
+          },
+        },
+      },
+      category: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+};
+
+export const ReviewService = {
+  createReview,
+  updateReview,
+  getTutorReviews,
+  // getStudentReview,
+  getReviewById
+};

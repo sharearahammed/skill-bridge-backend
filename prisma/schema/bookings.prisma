@@ -17,11 +17,10 @@ model Booking {
   student      User         @relation("StudentBookings", fields: [studentId], references: [id])
   tutor        TutorProfile @relation("TutorBookings", fields: [tutorId], references: [userId])
   availability Availability @relation(fields: [availabilityId], references: [id])
-
-  @@unique([availabilityId])
 }
 
 enum BookingStatus {
+  PENDING
   CONFIRMED
   COMPLETED
   CANCELLED

@@ -3,6 +3,7 @@ model Category {
   name String @unique
   createdAt DateTime @default(now())
 
-  tutorSubjects TutorSubject[]   // ← opposite relation
-  availability  Availability[]   // optional, for availability
+  tutorSubjects TutorSubject[]
+  availability  Availability[]
+  reviews       Review[]
 }

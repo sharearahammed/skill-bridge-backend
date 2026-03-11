@@ -7,7 +7,7 @@ const router = express.Router();
 // Student
 router.post(
   "/",
-  authMiddleware(UserRole.STUDENT, UserRole.ADMIN, UserRole.TUTOR),
+  authMiddleware(UserRole.STUDENT),
   BookingController.createBooking,
 );
 router.get("/student",authMiddleware(UserRole.STUDENT, UserRole.ADMIN, UserRole.TUTOR), BookingController.getStudentBookings);

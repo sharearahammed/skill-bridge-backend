@@ -3,19 +3,41 @@ import { prisma } from "../../lib/prisma";
 
 // Create a booking
 const createBooking = async (studentId: string, availabilityId: string) => {
-  // Check if slot exists
+  // Check slot exists
   const slot = await prisma.availability.findUnique({
     where: { id: availabilityId },
   });
-  console.log({ slot });
+
   if (!slot) throw new Error("Slot not found");
 
-  // Prevent double booking
-  const existingBooking = await prisma.booking.findFirst({
-    where: { availabilityId },
+  // Check if slot already confirmed by someone
+  const confirmedBooking = await prisma.booking.findFirst({
+    where: {
+      availabilityId,
+      status: "CONFIRMED",
+    },
   });
-  if (existingBooking) throw new Error("Slot already booked");
 
+  if (confirmedBooking) {
+    throw new Error("Slot already booked");
+  }
+
+  // Check if same student already requested
+  const existingStudentBooking = await prisma.booking.findFirst({
+    where: {
+      availabilityId,
+      studentId,
+      status: {
+        in: ["PENDING", "CONFIRMED"],
+      },
+    },
+  });
+
+  if (existingStudentBooking) {
+    throw new Error("You already requested this slot");
+  }
+
+  // Create booking
   return prisma.booking.create({
     data: {
       studentId,
@@ -23,7 +45,7 @@ const createBooking = async (studentId: string, availabilityId: string) => {
       availabilityId,
       startTime: slot.startTime,
       endTime: slot.endTime,
-      status: BookingStatus.CONFIRMED,
+      status: "PENDING",
     },
   });
 };
@@ -66,8 +88,20 @@ const updateBookingStatus = async (
 const getUserBookings = async (userId: string) => {
   return prisma.booking.findMany({
     where: { studentId: userId },
-    include: { tutor: { include: { user: true } }, availability: true },
-    orderBy: { startTime: "asc" },
+    include: {
+      tutor: {
+        include: {
+          user: true,
+          reviews: {
+            where: {
+              studentId: userId,
+            },
+          },
+        },
+      },
+      availability: true,
+    },
+    orderBy: { startTime: "desc" },
   });
 };
 

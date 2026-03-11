@@ -12,7 +12,18 @@ router.post(
   ReviewController.createReview,
 );
 
+// Student update review
+router.patch(
+  "/:reviewId",
+  authMiddleware(UserRole.STUDENT),
+  ReviewController.updateReview,
+);
+
 // Get tutor reviews
-router.get("/:tutorId", ReviewController.getTutorReviews);
+router.get("/tutor/:tutorId", ReviewController.getTutorReviews);
+
+// Student review by category
+// router.get("/student-review", ReviewController.getStudentReview);
+router.get("/:id", ReviewController.getReviewById);
 
 export const reviewRouter: Router = router;

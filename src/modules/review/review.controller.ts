@@ -4,17 +4,78 @@ import { ReviewService } from "./review.service";
 // Student add review
 const createReview = async (req: Request, res: Response) => {
   const studentId = req.user!.id;
-  const { tutorId, rating, comment } = req.body;
+
+  const { tutorId, categoryId, rating, comment } = req.body;
+
   try {
     const review = await ReviewService.createReview(
       studentId,
       tutorId,
+      categoryId,
       rating,
-      comment
+      comment,
     );
-    res.json({ success: true, data: review });
-  } catch (err: any) {
-    res.status(400).json({ success: false, message: err.message });
+
+    res.json({
+      success: true,
+      data: review,
+    });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: err.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Something went wrong",
+      });
+    }
+  }
+};
+
+// update review
+const updateReview = async (req: Request, res: Response) => {
+  const studentId = req.user!.id;
+
+  const reviewIdParam = req.params.reviewId;
+
+  if (!reviewIdParam || Array.isArray(reviewIdParam)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid review id",
+    });
+  }
+
+  const reviewId = reviewIdParam;
+  const { rating, comment } = req.body;
+
+  try {
+    const review = await ReviewService.updateReview(
+      studentId,
+      reviewId,
+      rating,
+      comment,
+    );
+
+    res.json({
+      success: true,
+      message: "Review updated successfully",
+      data: review,
+    });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      res.status(400).json({
+        success: false,
+        message: err.message,
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Something went wrong",
+      });
+    }
   }
 };
 
@@ -25,4 +86,67 @@ const getTutorReviews = async (req: Request, res: Response) => {
   res.json({ success: true, data: reviews });
 };
 
-export const ReviewController = { createReview, getTutorReviews };
+// Get a review by student and category
+// const getStudentReview = async (req: Request, res: Response) => {
+//   try {
+//     const { studentId, categoryId } = req.query;
+
+//     if (!studentId || !categoryId)
+//       return res
+//         .status(400)
+//         .json({ message: "studentId and categoryId are required" });
+
+//     const review = await ReviewService.getStudentReview(
+//       studentId as string,
+//       categoryId as string,
+//     );
+
+//     return res.status(200).json({ data: review });
+//   } catch (error: any) {
+//     return res
+//       .status(500)
+//       .json({ message: error.message || "Something went wrong" });
+//   }
+// };
+
+// Get single review by reviewId
+const getReviewById = async (req: Request, res: Response) => {
+  try {
+    const reviewId = req.params.id;
+    console.log({ reviewId });
+    if (!reviewId || typeof reviewId !== "string") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid review id",
+      });
+    }
+
+    const review = await ReviewService.getReviewById(reviewId);
+
+    if (!review) {
+      return res.status(404).json({
+        success: false,
+        message: "Review not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Review retrieved successfully",
+      data: review,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "Failed to retrieve review",
+    });
+  }
+};
+
+export const ReviewController = {
+  createReview,
+  updateReview,
+  getTutorReviews,
+  // getStudentReview,
+  getReviewById,
+};
