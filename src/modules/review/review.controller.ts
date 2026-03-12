@@ -119,27 +119,27 @@ const getTutorReviewsByCategory = async (req: Request, res: Response) => {
 };
 
 // Get a review by student and category
-// const getStudentReview = async (req: Request, res: Response) => {
-//   try {
-//     const { studentId, categoryId } = req.query;
+const getStudentReview = async (req: Request, res: Response) => {
+  try {
+    const { studentId, categoryId } = req.query;
 
-//     if (!studentId || !categoryId)
-//       return res
-//         .status(400)
-//         .json({ message: "studentId and categoryId are required" });
+    if (!studentId || !categoryId)
+      return res
+        .status(400)
+        .json({ message: "studentId and categoryId are required" });
 
-//     const review = await ReviewService.getStudentReview(
-//       studentId as string,
-//       categoryId as string,
-//     );
+    const review = await ReviewService.getStudentReview(
+      studentId as string,
+      categoryId as string,
+    );
 
-//     return res.status(200).json({ data: review });
-//   } catch (error: any) {
-//     return res
-//       .status(500)
-//       .json({ message: error.message || "Something went wrong" });
-//   }
-// };
+    return res.status(200).json({ data: review });
+  } catch (error: any) {
+    return res
+      .status(500)
+      .json({ message: error.message || "Something went wrong" });
+  }
+};
 
 // Get single review by reviewId
 const getReviewById = async (req: Request, res: Response) => {
@@ -175,10 +175,17 @@ const getReviewById = async (req: Request, res: Response) => {
   }
 };
 
+const getTutorReviews = async (req: Request, res: Response) => {
+  const tutorId = req.params.tutorId as string;
+  const reviews = await ReviewService.getTutorReviews(tutorId);
+  res.json({ success: true, data: reviews });
+};
+
 export const ReviewController = {
   createReview,
   updateReview,
   getTutorReviewsByCategory,
-  // getStudentReview,
+  getStudentReview,
   getReviewById,
+  getTutorReviews
 };

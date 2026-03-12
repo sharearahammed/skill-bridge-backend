@@ -26,8 +26,11 @@ router.get(
   ReviewController.getTutorReviewsByCategory,
 );
 
+router.get("/tutor/:tutorId", ReviewController.getTutorReviews);
+
 // Student review by category
-// router.get("/student-review", ReviewController.getStudentReview);
+router.get("/student-review", ReviewController.getStudentReview);
+
 router.get("/:id", ReviewController.getReviewById);
 
 export const reviewRouter: Router = router;

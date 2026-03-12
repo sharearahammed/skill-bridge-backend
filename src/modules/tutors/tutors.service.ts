@@ -1,12 +1,7 @@
 // tutors.service.ts
 
 import { prisma } from "../../lib/prisma";
-
-export interface TutorFilters {
-  categoryId?: string;
-  minRating?: number;
-  maxRate?: number;
-}
+import { TutorFilters } from "./tutors.controller";
 
 const getAllTutors = async (filters: TutorFilters) => {
   return prisma.tutorProfile.findMany({
@@ -16,18 +11,61 @@ const getAllTutors = async (filters: TutorFilters) => {
           some: { categoryId: filters.categoryId },
         },
       }),
-      ...(filters.minRating && { rating: { gte: filters.minRating } }),
-      ...(filters.maxRate && { pricePerHour: { lte: filters.maxRate } }),
+
+      ...(filters.search && {
+        tutorSubjects: {
+          some: {
+            category: {
+              name: {
+                contains: filters.search,
+                mode: "insensitive",
+              },
+            },
+          },
+        },
+      }),
+
+      ...(filters.minRating && {
+        rating: { gte: filters.minRating },
+      }),
+
+      ...(filters.maxRate && {
+        pricePerHour: { lte: filters.maxRate },
+      }),
     },
+
     include: {
-      user: { select: { id: true, name: true, image: true } },
-      tutorSubjects: {
-        include: { category: { select: { id: true, name: true } } },
+      user: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
       },
+
+      tutorSubjects: {
+        include: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+
       availability: true,
-      _count: { select: { reviews: true } },
+
+      _count: {
+        select: {
+          reviews: true,
+        },
+      },
     },
-    orderBy: { rating: "desc" },
+
+    orderBy: {
+      rating: "desc",
+    },
   });
 };
 
@@ -61,7 +99,7 @@ const getTutorProfile = async (tutorId: string) => {
 
 const getFeaturedTutors = async () => {
   const tutors = await prisma.tutorProfile.findMany({
-    take: 5,
+    take: 6,
     where: {
       user: {
         role: "TUTOR",

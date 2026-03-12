@@ -1,5 +1,24 @@
 import { prisma } from "../../lib/prisma";
 
+const updateTutorAverageRating = async (tutorId: string) => {
+  // Get all ratings of this tutor
+  const reviews = await prisma.review.findMany({
+    where: { tutorId },
+    select: { rating: true },
+  });
+
+  if (reviews.length === 0) return;
+
+  const avgRating =
+    reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+
+  await prisma.tutorProfile.update({
+    where: { userId: tutorId },
+    data: { rating: avgRating },
+  });
+};
+
+
 // Create a review
 const createReview = async (
   studentId: string,
@@ -32,7 +51,7 @@ const createReview = async (
     throw new Error("You already reviewed this subject for this tutor");
   }
 
-  return prisma.review.create({
+  const review = await prisma.review.create({
     data: {
       studentId,
       tutorId,
@@ -41,6 +60,11 @@ const createReview = async (
       comment: comment ?? null,
     },
   });
+
+  // ✅ Update tutorProfile rating
+  await updateTutorAverageRating(tutorId);
+
+  return review;
 };
 
 // Update review
@@ -50,16 +74,29 @@ const updateReview = async (
   rating: number,
   comment?: string,
 ) => {
-  return prisma.review.updateMany({
-    where: {
-      id: reviewId,
-      studentId,
-    },
+  // find the review first
+  const existingReview = await prisma.review.findUnique({
+    where: { id: reviewId },
+    select: { tutorId: true },
+  });
+
+  if (!existingReview) {
+    throw new Error("Review not found or you are not allowed to update it");
+  }
+
+  // now update
+  const review = await prisma.review.update({
+    where: { id: reviewId },
     data: {
       rating,
-      comment: comment || null,
+      comment: comment ?? null,
     },
   });
+
+  // ✅ update tutor average rating
+  await updateTutorAverageRating(existingReview.tutorId);
+
+  return review;
 };
 
 // Get reviews of a tutor
@@ -105,10 +142,40 @@ const getReviewById = async (reviewId: string) => {
   });
 };
 
+const getStudentReview = async (studentId: string, categoryId: string) => {
+  return prisma.review.findFirst({
+    where: {
+      studentId,
+      categoryId, // will match only if categoryId is provided
+    },
+    include: {
+      tutor: {
+        select: {
+          userId: true,
+          user: { select: { name: true, email: true, image: true } },
+        },
+      },
+      category: {
+        select: { id: true, name: true },
+      },
+    },
+  });
+};
+
+// Get reviews of a tutor
+const getTutorReviews = async (tutorId: string) => {
+  return prisma.review.findMany({
+    where: { tutorId },
+    include: { student: { select: { id: true, name: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+};
+
 export const ReviewService = {
   createReview,
   updateReview,
   getTutorReviewsByCategory,
-  // getStudentReview,
-  getReviewById
+  getStudentReview,
+  getReviewById,
+  getTutorReviews
 };

@@ -2,10 +2,11 @@
 import { Request, Response } from "express";
 import { TutorsService } from "./tutors.service";
 
-interface TutorFilters {
+export interface TutorFilters {
   categoryId?: string;
   minRating?: number;
   maxRate?: number;
+  search?: string;
 }
 
 // Get all tutors with optional filters
@@ -13,26 +14,38 @@ const getAllTutors = async (req: Request, res: Response) => {
   try {
     const filters: TutorFilters = {};
 
-    // Only add filters if query params exist
-    if (req.query.categoryId && typeof req.query.categoryId === "string") {
-      filters.categoryId = req.query.categoryId;
+    const { categoryId, minRating, maxRate, search } = req.query;
+
+    if (categoryId && typeof categoryId === "string") {
+      filters.categoryId = categoryId;
     }
 
-    if (req.query.minRating) {
-      const min = Number(req.query.minRating);
-      if (!isNaN(min)) filters.minRating = min;
+    if (minRating && typeof minRating === "string") {
+      const rating = Number(minRating);
+      if (!isNaN(rating)) filters.minRating = rating;
     }
 
-    if (req.query.maxRate) {
-      const max = Number(req.query.maxRate);
-      if (!isNaN(max)) filters.maxRate = max;
+    if (maxRate && typeof maxRate === "string") {
+      const rate = Number(maxRate);
+      if (!isNaN(rate)) filters.maxRate = rate;
+    }
+
+    if (search && typeof search === "string") {
+      filters.search = search;
     }
 
     const tutors = await TutorsService.getAllTutors(filters);
 
-    res.json({ success: true, data: tutors });
+    res.json({
+      success: true,
+      count: tutors.length,
+      data: tutors,
+    });
   } catch (err: any) {
-    res.status(500).json({ success: false, message: err.message });
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };
 
