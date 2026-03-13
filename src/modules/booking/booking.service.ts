@@ -58,7 +58,7 @@ const getStudentBookings = async (studentId: string) => {
       tutor: { select: { id: true, bio: true, pricePerHour: true } },
       availability: true,
     },
-    orderBy: { startTime: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 };
 
@@ -70,7 +70,7 @@ const getTutorBookings = async (tutorId: string) => {
       student: { select: { id: true, name: true, email: true } },
       availability: true,
     },
-    orderBy: { startTime: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 };
 
@@ -101,7 +101,7 @@ const getUserBookings = async (userId: string) => {
       },
       availability: true,
     },
-    orderBy: { startTime: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 };
 

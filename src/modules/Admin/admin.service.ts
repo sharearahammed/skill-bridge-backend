@@ -35,7 +35,7 @@ const getAllBookings = () => {
       },
       availability: true,
     },
-    orderBy: { startTime: "desc" },
+    orderBy: { createdAt: "desc" },
   });
 };
 

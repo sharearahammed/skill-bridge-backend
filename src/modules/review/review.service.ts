@@ -18,7 +18,6 @@ const updateTutorAverageRating = async (tutorId: string) => {
   });
 };
 
-
 // Create a review
 const createReview = async (
   studentId: string,
@@ -93,14 +92,16 @@ const updateReview = async (
     },
   });
 
-  // ✅ update tutor average rating
   await updateTutorAverageRating(existingReview.tutorId);
 
   return review;
 };
 
 // Get reviews of a tutor
-const getTutorReviewsByCategory = async (tutorId: string, categoryId: string) => {
+const getTutorReviewsByCategory = async (
+  tutorId: string,
+  categoryId: string,
+) => {
   return prisma.review.findMany({
     where: {
       tutorId,
@@ -177,5 +178,5 @@ export const ReviewService = {
   getTutorReviewsByCategory,
   getStudentReview,
   getReviewById,
-  getTutorReviews
+  getTutorReviews,
 };

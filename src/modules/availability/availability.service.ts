@@ -33,7 +33,7 @@ const getSlots = async (userId: string) => {
 
   return prisma.availability.findMany({
     where: { tutorId: tutor.userId },
-    orderBy: { startTime: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 };
 

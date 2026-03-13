@@ -70,7 +70,7 @@ const getTutorSessions = async (userId: string) => {
   return prisma.booking.findMany({
     where: { tutorId: tutor.userId },
     include: { student: true, availability: true },
-    orderBy: { startTime: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 };
 
