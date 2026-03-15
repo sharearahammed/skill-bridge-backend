@@ -1,3 +1,4 @@
+import { BookingStatus } from "../../../generated/prisma/enums";
 import { prisma } from "../../lib/prisma";
 
 const updateTutorAverageRating = async (tutorId: string) => {
@@ -33,7 +34,8 @@ const createReview = async (
       status: "COMPLETED",
     },
   });
-
+  console.log({ studentId });
+  console.log({ tutorId });
   if (!booking) {
     throw new Error("Cannot review tutor without a completed booking");
   }

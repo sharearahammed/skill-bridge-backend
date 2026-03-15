@@ -105,10 +105,38 @@ const getUserBookings = async (userId: string) => {
   });
 };
 
+// Mark session as attended
+const attendSession = async (studentId: string, bookingId: string) => {
+  // Validate booking exists
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    select: { studentId: true, status: true },
+  });
+
+  if (!booking) throw new Error("Booking not found");
+
+  // Check if booking belongs to student
+  if (booking.studentId !== studentId) {
+    throw new Error("You are not allowed to attend this session");
+  }
+
+  // Only CONFIRMED sessions can be attended
+  if (booking.status !== BookingStatus.CONFIRMED) {
+    throw new Error("Only confirmed sessions can be attended");
+  }
+
+  // Update status to COMPLETED
+  return prisma.booking.update({
+    where: { id: bookingId },
+    data: { status: BookingStatus.ATTEND },
+  });
+};
+
 export const BookingService = {
   createBooking,
   getStudentBookings,
   getTutorBookings,
   updateBookingStatus,
   getUserBookings,
+  attendSession,
 };

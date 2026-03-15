@@ -42,10 +42,58 @@ const myBookings = async (req: Request, res: Response) => {
   res.json({ success: true, data: bookings });
 };
 
+const attendSessionController = async (req: Request, res: Response) => {
+  try {
+    const studentId = req.user?.id;
+    if (!studentId) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized: Student not found",
+      });
+    }
+
+    const bookingIdParam = req.params.bookingId;
+
+    // Validate bookingId
+    if (!bookingIdParam) {
+      return res.status(400).json({
+        success: false,
+        message: "Booking ID is required",
+      });
+    }
+
+    if (Array.isArray(bookingIdParam)) {
+      return res.status(400).json({
+        success: false,
+        message: "Booking ID must be a single string",
+      });
+    }
+
+    const bookingId: string = bookingIdParam;
+
+    const updatedBooking = await BookingService.attendSession(
+      studentId,
+      bookingId
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Session marked as attended",
+      data: updatedBooking,
+    });
+  } catch (error: any) {
+    return res.status(400).json({
+      success: false,
+      message: error.message || "Failed to attend session",
+    });
+  }
+};
+
 export const BookingController = {
   createBooking,
   getStudentBookings,
   getTutorBookings,
   updateBookingStatus,
-  myBookings
+  myBookings,
+  attendSessionController,
 };

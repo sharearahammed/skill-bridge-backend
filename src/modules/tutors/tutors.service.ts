@@ -101,12 +101,17 @@ const getFeaturedTutors = async () => {
   const tutors = await prisma.tutorProfile.findMany({
     take: 6,
     where: {
+      rating: {
+        gt: 0,
+      },
       user: {
         role: "TUTOR",
         status: "ACTIVE",
       },
     },
-    orderBy: { rating: "desc" },
+    orderBy: {
+      rating: "desc",
+    },
     include: {
       user: {
         select: { id: true, name: true, image: true },
@@ -128,7 +133,9 @@ const getFeaturedTutors = async () => {
           createdAt: true,
         },
       },
-      _count: { select: { reviews: true } },
+      _count: {
+        select: { reviews: true },
+      },
     },
   });
 

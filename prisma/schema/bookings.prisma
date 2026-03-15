@@ -24,4 +24,5 @@ enum BookingStatus {
   CONFIRMED
   COMPLETED
   CANCELLED
+  ATTEND
 }

@@ -181,11 +181,12 @@ const getTutorReviews = async (req: Request, res: Response) => {
   res.json({ success: true, data: reviews });
 };
 
+
 export const ReviewController = {
   createReview,
   updateReview,
   getTutorReviewsByCategory,
   getStudentReview,
   getReviewById,
-  getTutorReviews
+  getTutorReviews,
 };
