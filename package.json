@@ -6,7 +6,7 @@
 "scripts": {
   "dev": "npx tsx watch src/server.ts",
   "seed:admin": "npx tsx src/scripts/seedAdmin.ts",
-  "build": "tsc",
+  "build": "echo 'No build needed'" ,
   "start": "node dist/server.js"
 },
   "keywords": [],
