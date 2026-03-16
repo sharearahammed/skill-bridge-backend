@@ -1,36 +1,20 @@
-// import app from "./app";
-// import { prisma } from "./lib/prisma";
-
-// const PORT = process.env.PORT || 3000;
-
-// async function main() {
-//   try {
-//     await prisma.$connect();
-//     console.log("Connect to the database succcessfully");
-//     app.listen(PORT, () => {
-//       console.log(`Server is running on http://localhost:${PORT}`);
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     await prisma.$disconnect();
-//     process.exit(1);
-//   }
-// }
-
-// main();
-
 import app from "./app";
 import { prisma } from "./lib/prisma";
 
-async function init() {
+const PORT = process.env.PORT || 3000;
+
+async function main() {
   try {
     await prisma.$connect();
-    console.log("Database connected");
+    console.log("Connect to the database succcessfully");
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
   } catch (error) {
-    console.error("Database connection error:", error);
+    console.log(error);
+    await prisma.$disconnect();
+    process.exit(1);
   }
 }
 
-init();
-
-export default app;
+main();
