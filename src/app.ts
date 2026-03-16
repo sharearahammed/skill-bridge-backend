@@ -8,7 +8,7 @@ import { tutorSubjectRouter } from "./modules/tutorSubject/tutorSubject.router";
 import { availableRouter } from "./modules/availability/availability.router";
 import { BookingRouter } from "./modules/booking/booking.router";
 import { reviewRouter } from "./modules/review/review.route";
-import { adminRouter } from "./modules/admin/admin.router";
+import { adminRouter } from "./modules/aadmin/admin.router";
 import { tutorsRouter } from "./modules/tutors/tutors.router";
 import { StudentProfileRouter } from "./modules/student profile/student.route";
 
