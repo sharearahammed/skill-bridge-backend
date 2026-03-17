@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts",
-    "build": "prisma generate && npx babel src -d dist",
-    "start": "ts-node-dev --respawn --transpile-only dist/src/server.js",
+    "build": "prisma generate && tsc",
+    "start": "node dist/src/server.js",
     "postinstall": "npx prisma generate"
   },
   "keywords": [],
