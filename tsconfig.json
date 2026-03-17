@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "rootDir": "",
+    "rootDir": "./src",
     "outDir": "./dist",
-    "module": "CommonJS",
     "moduleResolution": "node",
     "target": "ES2023",
+    "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["src/**/*", "generated/**/*"],
   "exclude": ["node_modules", "dist"]
