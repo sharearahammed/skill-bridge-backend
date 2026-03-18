@@ -1,18 +1,14 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
     "outDir": "./dist",
-    "moduleResolution": "node",
-    "target": "ES2023",
-    "module": "commonjs",
-    "strict": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "target": "ES2020",
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "strict": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*", "generated/**/*"],
-  "exclude": ["node_modules", "dist"],
-  "ts-node": {
-    "transpileOnly": true,
-    "files": true
-  }
+  "include": ["src", "generated"],
+  "exclude": ["node_modules", "dist"]
 }

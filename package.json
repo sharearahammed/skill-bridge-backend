@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "npx tsx watch src/server.ts",
     "seed:admin": "npx tsx src/scripts/seedAdmin.ts",
-    "build": "prisma generate && tsc",
+    "build": "tsc",
     "start": "node dist/src/server.js",
     "postinstall": "npx prisma generate"
   },
