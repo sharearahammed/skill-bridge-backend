@@ -23,7 +23,9 @@ app.use(
     origin:
       process.env.APP_URL ||
       "http://localhost:3000" ||
-      "https://skill-bridge-backend-fprg.onrender.com",
+      "https://skill-bridge-backend-fprg.onrender.com" ||
+      "https://skill-bridge-frontend-uk5b.onrender.com",
+
     credentials: true,
   }),
 );
