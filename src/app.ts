@@ -18,16 +18,24 @@ const app: Application = express();
 app.use(express.json({ limit: "10mb" })); // 10mb or more
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
+const allowedOrigins = [
+  process.env.APP_URL,
+  "http://localhost:3000",
+  "https://skill-bridge-backend-fprg.onrender.com",
+  "https://skill-bridge-frontend-uk5b.onrender.com",
+];
+
 app.use(
   cors({
-    origin:
-      process.env.APP_URL ||
-      "http://localhost:3000" ||
-      "https://skill-bridge-backend-fprg.onrender.com" ||
-      "https://skill-bridge-frontend-uk5b.onrender.com",
-
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS not allowed"));
+      }
+    },
     credentials: true,
-  }),
+  })
 );
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
