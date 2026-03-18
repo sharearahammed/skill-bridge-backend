@@ -12,8 +12,6 @@ import { tutorsRouter } from "./modules/tutors/tutors.router.js";
 import { StudentProfileRouter } from "./modules/student profile/student.route.js";
 import { auth } from "./lib/auth.js";
 
-
-
 const app: Application = express();
 
 // increase JSON payload limit
@@ -22,7 +20,10 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 app.use(
   cors({
-    origin: process.env.APP_URL || "http://localhost:3000",
+    origin:
+      process.env.APP_URL ||
+      "http://localhost:3000" ||
+      "https://skill-bridge-backend-fprg.onrender.com",
     credentials: true,
   }),
 );
@@ -44,7 +45,5 @@ app.use("/booking", BookingRouter);
 app.use("/review", reviewRouter);
 app.use("/allTutors", tutorsRouter);
 app.use("/student", StudentProfileRouter);
-
-
 
 export default app;
