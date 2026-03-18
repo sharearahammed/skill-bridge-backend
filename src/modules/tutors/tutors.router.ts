@@ -1,6 +1,6 @@
 // tutors.router.ts
 import { Router } from "express";
-import { TutorsController } from "./tutors.controller";
+import { TutorsController } from "./tutors.controller.js";
 
 const router = Router();
 

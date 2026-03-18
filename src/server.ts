@@ -1,5 +1,5 @@
-import app from "./app";
-import { prisma } from "./lib/prisma";
+import app from "./app.js";
+import { prisma } from "./lib/prisma.js";
 
 const PORT = process.env.PORT || 3000;
 
@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 prisma
   .$connect()
   .then(() => console.log("Connected to database"))
-  .catch((err) => console.error("Database connection error:", err));
+  .catch((err: any) => console.error("Database connection error:", err));
 
 // For local development
 if (process.env.NODE_ENV !== "production") {

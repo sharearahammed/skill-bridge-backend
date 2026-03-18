@@ -1,6 +1,6 @@
 // admin.controller.ts
 import { Request, Response } from "express";
-import { AdminService } from "./admin.service";
+import { AdminService } from "./admin.service.js";
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {

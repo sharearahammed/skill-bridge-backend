@@ -1,16 +1,17 @@
 import express, { Application } from "express";
 import { toNodeHandler } from "better-auth/node";
-import { auth } from "./lib/auth";
 import cors from "cors";
-import { CategoryRouter } from "./modules/category/category.route";
-import { tutorRouter } from "./modules/tutor/tutor.route";
-import { tutorSubjectRouter } from "./modules/tutorSubject/tutorSubject.router";
-import { availableRouter } from "./modules/availability/availability.router";
-import { BookingRouter } from "./modules/booking/booking.router";
-import { reviewRouter } from "./modules/review/review.route";
-import { adminRouter } from "./modules/admin/admin.router";
-import { tutorsRouter } from "./modules/tutors/tutors.router";
-import { StudentProfileRouter } from "./modules/student profile/student.route";
+import { adminRouter } from "./modules/admin/admin.router.js";
+import { CategoryRouter } from "./modules/category/category.route.js";
+import { tutorRouter } from "./modules/tutor/tutor.route.js";
+import { tutorSubjectRouter } from "./modules/tutorSubject/tutorSubject.router.js";
+import { availableRouter } from "./modules/availability/availability.router.js";
+import { BookingRouter } from "./modules/booking/booking.router.js";
+import { reviewRouter } from "./modules/review/review.route.js";
+import { tutorsRouter } from "./modules/tutors/tutors.router.js";
+import { StudentProfileRouter } from "./modules/student profile/student.route.js";
+import { auth } from "./lib/auth.js";
+
 
 
 const app: Application = express();

@@ -1,5 +1,5 @@
-import { BookingStatus } from "../../../generated/prisma/enums";
-import { prisma } from "../../lib/prisma";
+import { BookingStatus } from "../../../generated/prisma/enums.js";
+import { prisma } from "../../lib/prisma.js";
 
 // Create a booking
 const createBooking = async (studentId: string, availabilityId: string) => {

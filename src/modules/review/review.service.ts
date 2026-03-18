@@ -1,5 +1,4 @@
-import { BookingStatus } from "../../../generated/prisma/enums";
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 
 const updateTutorAverageRating = async (tutorId: string) => {
   // Get all ratings of this tutor
@@ -11,7 +10,7 @@ const updateTutorAverageRating = async (tutorId: string) => {
   if (reviews.length === 0) return;
 
   const avgRating =
-    reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    reviews.reduce((sum: any, r: any) => sum + r.rating, 0) / reviews.length;
 
   await prisma.tutorProfile.update({
     where: { userId: tutorId },

@@ -1,6 +1,6 @@
 // tutors.controller.ts
 import { Request, Response } from "express";
-import { TutorsService } from "./tutors.service";
+import { TutorsService } from "./tutors.service.js";
 
 export interface TutorFilters {
   categoryId?: string;

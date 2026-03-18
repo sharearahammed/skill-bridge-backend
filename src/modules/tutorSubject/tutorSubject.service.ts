@@ -1,4 +1,4 @@
-import { prisma } from "../../lib/prisma";
+import { prisma } from "../../lib/prisma.js";
 
 const addSubjects = async (userId: string, categoryIds: string[]) => {
   const tutor = await prisma.tutorProfile.findUnique({
@@ -32,7 +32,7 @@ const getTutorSubjects = async (userId: string) => {
 
   if (!tutor) throw new Error("Tutor profile not found");
 
-  return tutor.tutorSubjects.map((ts) => ts.category);
+  return tutor.tutorSubjects.map((ts: any) => ts.category);
 };
 
 export const TutorSubjectService = { addSubjects, getTutorSubjects };

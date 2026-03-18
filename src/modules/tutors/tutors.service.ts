@@ -1,7 +1,7 @@
 // tutors.service.ts
 
-import { prisma } from "../../lib/prisma";
-import { TutorFilters } from "./tutors.controller";
+import { prisma } from "../../lib/prisma.js";
+import { TutorFilters } from "./tutors.controller.js";
 
 const getAllTutors = async (filters: TutorFilters) => {
   return prisma.tutorProfile.findMany({
@@ -139,7 +139,7 @@ const getFeaturedTutors = async () => {
     },
   });
 
-  return tutors.map((tutor) => ({
+  return tutors.map((tutor: any) => ({
     id: tutor.id,
     bio: tutor.bio,
     rating: tutor.rating,

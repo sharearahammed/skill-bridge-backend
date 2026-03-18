@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { AvailabilityService } from "./availability.service";
+import { AvailabilityService } from "./availability.service.js";
 
 const createSlot = async (req: Request, res: Response) => {
   const userId = req.user!.id;

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TutorSubjectService } from "./tutorSubject.service";
+import { TutorSubjectService } from "./tutorSubject.service.js";
 
 const addSubjects = async (req: Request, res: Response) => {
   const userId = req.user!.id;

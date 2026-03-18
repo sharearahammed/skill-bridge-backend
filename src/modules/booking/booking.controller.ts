@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { BookingService } from "./booking.service";
+import { BookingService } from "./booking.service.js";
 
 // Student books a slot
 const createBooking = async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
 import express, { Router } from "express";
-import authMiddleware, { UserRole } from "../../lib/middlewares/auth";
-import { AvailabilityController } from "./availability.controller";
+import authMiddleware, { UserRole } from "../../lib/middlewares/auth.js";
+import { AvailabilityController } from "./availability.controller.js";
 
 const router = express.Router();
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { TutorService } from "./tutor.service";
+import { TutorService } from "./tutor.service.js";
 
 const createOrUpdateProfile = async (req: Request, res: Response) => {
   const userId = req.user!.id;
