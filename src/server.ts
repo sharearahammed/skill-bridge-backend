@@ -10,11 +10,12 @@ prisma
   .catch((err: any) => console.error("Database connection error:", err));
 
 // For local development
-if (process.env.NODE_ENV !== "production") {
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-  });
-}
+// if (process.env.NODE_ENV !== "production") {
+app.listen(PORT, () => {
+  // console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
+});
+// }
 
 // For Vercel serverless
 export default app;
