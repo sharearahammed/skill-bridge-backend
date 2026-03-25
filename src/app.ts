@@ -22,7 +22,9 @@ const allowedOrigins: string[] = [
   process.env.APP_URL,
   "http://localhost:3000",
   "https://skill-bridge-frontend-uk5b.onrender.com",
-  "https://skill-bridge-10.netlify.app"
+  "https://skill-bridge-10.netlify.app",
+  "https://skill-bridge-backend-ten.vercel.app/api/auth/sign-in/email",
+  "https://skill-bridge-backend-ten.vercel.app/api/auth/sign-up/email",
 ].filter((o): o is string => Boolean(o));
 
 app.use(
@@ -43,9 +45,8 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
-
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
