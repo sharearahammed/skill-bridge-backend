@@ -23,10 +23,6 @@ const allowedOrigins: string[] = [
   "http://localhost:3000",
   "https://skill-bridge-frontend-uk5b.onrender.com",
   "https://skill-bridge-10.netlify.app",
-  "https://skill-bridge-backend-ten.vercel.app",
-  "https://skill-bridge-10.netlify.app",
-  "https://skill-bridge-backend-ten.vercel.app/api/auth/sign-in/email",
-  "https://skill-bridge-backend-ten.vercel.app/api/auth/sign-up/email",
 ].filter((o): o is string => Boolean(o));
 
 app.use(
