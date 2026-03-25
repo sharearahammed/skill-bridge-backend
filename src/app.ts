@@ -23,14 +23,17 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://skill-bridge-backend-fprg.onrender.com",
   "https://skill-bridge-frontend-uk5b.onrender.com",
-];
+].filter(Boolean);
 
 app.use(
   cors({
     origin: (origin, callback) => {
+      console.log("Origin:", origin);
+
       if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
+        console.error("Blocked by CORS:", origin);
         callback(new Error("CORS not allowed"));
       }
     },
