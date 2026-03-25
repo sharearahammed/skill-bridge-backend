@@ -35,7 +35,7 @@ export const auth = betterAuth({
   ],
     cookies: {
     sessionToken: {
-      name: "better-auth.session-token",
+      name: "better-auth.session_token",
       attributes: {
         httpOnly: true,
         secure: true,     // 🔥 MUST (https)
