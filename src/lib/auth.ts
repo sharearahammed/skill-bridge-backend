@@ -31,6 +31,7 @@ export const auth = betterAuth({
     process.env.APP_URL!,
     "http://localhost:4000",
     "https://skill-bridge-backend-ten.vercel.app",
+    "https://skill-bridge-10.netlify.app"
   ],
   user: {
     additionalFields: {
