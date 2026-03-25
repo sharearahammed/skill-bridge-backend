@@ -18,28 +18,34 @@ const app: Application = express();
 app.use(express.json({ limit: "10mb" })); // 10mb or more
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
-const allowedOrigins = [
+const allowedOrigins: string[] = [
   process.env.APP_URL,
   "http://localhost:3000",
-  "https://skill-bridge-backend-fprg.onrender.com",
   "https://skill-bridge-frontend-uk5b.onrender.com",
-].filter(Boolean);
+  "https://skill-bridge-10.netlify.app"
+].filter((o): o is string => Boolean(o));
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      console.log("Origin:", origin);
+      console.log("Request Origin:", origin);
 
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        console.error("Blocked by CORS:", origin);
-        callback(new Error("CORS not allowed"));
+      // allow requests with no origin (like server-to-server)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       }
+
+      console.error("Blocked by CORS:", origin);
+      return callback(new Error("CORS not allowed"));
     },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 
