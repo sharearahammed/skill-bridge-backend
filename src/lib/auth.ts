@@ -33,6 +33,16 @@ export const auth = betterAuth({
     "https://skill-bridge-backend-ten.vercel.app",
     "https://skill-bridge-10.netlify.app"
   ],
+    cookies: {
+    sessionToken: {
+      name: "better-auth.session-token",
+      attributes: {
+        httpOnly: true,
+        secure: true,     // 🔥 MUST (https)
+        sameSite: "none", // 🔥 MUST (cross-domain)
+      },
+    },
+  },
   user: {
     additionalFields: {
       role: {
