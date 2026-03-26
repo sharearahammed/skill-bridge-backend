@@ -42,7 +42,6 @@ export const auth = betterAuth({
         secure: true,
         sameSite: "none",
         path: "/",
-        domain: ".onrender.com",
       },
     },
   },
