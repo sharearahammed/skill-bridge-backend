@@ -32,6 +32,7 @@ export const auth = betterAuth({
     "http://localhost:4000",
     "https://skill-bridge-backend-ten.vercel.app",
     "https://skill-bridge-10.netlify.app",
+    "https://skill-bridge-frontend-uk5b.onrender.com"
   ],
   cookies: {
     sessionToken: {
