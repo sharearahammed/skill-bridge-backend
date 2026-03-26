@@ -31,15 +31,16 @@ export const auth = betterAuth({
     process.env.APP_URL!,
     "http://localhost:4000",
     "https://skill-bridge-backend-ten.vercel.app",
-    "https://skill-bridge-10.netlify.app"
+    "https://skill-bridge-10.netlify.app",
   ],
-    cookies: {
+  cookies: {
     sessionToken: {
       name: "better-auth.session_token",
-      attributes: {
+      options: {
         httpOnly: true,
-        secure: true,     // 🔥 MUST (https)
-        sameSite: "none", // 🔥 MUST (cross-domain)
+        secure: true,
+        sameSite: "none",
+        path: "/",
       },
     },
   },
