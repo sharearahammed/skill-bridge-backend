@@ -42,7 +42,7 @@ export const auth = betterAuth({
         secure: true,
         sameSite: "none",
         path: "/",
-        domain: ".netlify.app",
+        domain: ".onrender.com",
       },
     },
   },
