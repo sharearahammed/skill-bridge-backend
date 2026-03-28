@@ -36,7 +36,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     APP_URL!,
     "https://skill-bridge-10.netlify.app",
-    // "https://skill-bridge-frontend-uk5b.onrender.com",
+    "https://skill-bridge-frontend-uk5b.onrender.com",
     "http://localhost:3000",
   ],
   advanced: {
