@@ -23,27 +23,31 @@ type AuthUser = {
   emailVerified: boolean;
 };
 
+const APP_URL = process.env.APP_URL;
+
+if (!APP_URL) {
+  throw new Error("APP_URL missing");
+}
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
   trustedOrigins: [
-    process.env.APP_URL!,
-    "http://localhost:4000",
-    "https://skill-bridge-backend-ten.vercel.app",
+    APP_URL!,
     "https://skill-bridge-10.netlify.app",
     "https://skill-bridge-frontend-uk5b.onrender.com",
-    "https://skill-bridge-backend-fprg.onrender.com",
-    "http://localhost:3000"
+    "http://localhost:3000",
   ],
   cookies: {
     sessionToken: {
-      name: "better-auth.session_token",
+      name: "__Secure-better-auth.session_token",
       options: {
         httpOnly: true,
         secure: true,
         sameSite: "none",
         path: "/",
+        maxAge: 60 * 60 * 24 * 7,
       },
     },
   },
