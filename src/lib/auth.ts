@@ -36,21 +36,19 @@ export const auth = betterAuth({
   trustedOrigins: [
     APP_URL!,
     "https://skill-bridge-10.netlify.app",
-    "https://skill-bridge-frontend-uk5b.onrender.com",
+    // "https://skill-bridge-frontend-uk5b.onrender.com",
     "http://localhost:3000",
   ],
-  cookies: {
-    sessionToken: {
-      name: "__Secure-better-auth.session_token",
-      options: {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        path: "/",
-        maxAge: 60 * 60 * 24 * 7,
-      },
-    },
+  advanced: {
+  defaultCookieAttributes: {
+    sameSite: "none",
+    secure: true,
   },
+  crossSubDomainCookies: {
+    enabled: true,
+    domain: "onrender.com",
+  },
+},
   user: {
     additionalFields: {
       role: {

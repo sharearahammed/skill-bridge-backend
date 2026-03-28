@@ -66,6 +66,7 @@ const authMiddleware = (...roles: UserRole[]) => {
       }
 
       console.log("session", session);
+      console.log("Origin:", req.headers.origin);
       next();
     } catch (error) {
       next(error);
