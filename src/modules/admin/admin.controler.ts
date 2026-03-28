@@ -59,10 +59,26 @@ const createCategory = async (req: Request, res: Response) => {
   }
 };
 
+const deleteCategory = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    if (!id || Array.isArray(id)) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid category id" });
+    }
+    await AdminService.deleteCategory(id);
+    res.json({ success: true, message: "Category deleted" });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
+};
+
 export const AdminController = {
   getAllUsers,
   getAllCategories,
   createCategory,
   getAllBookings,
   updateUserStatus,
+  deleteCategory,
 };

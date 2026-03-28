@@ -21,10 +21,16 @@ router.patch(
 router.get("/bookings", AdminController.getAllBookings);
 
 router.get("/categories", AdminController.getAllCategories);
+
 router.post(
   "/category",
   authMiddleware(UserRole.ADMIN),
   AdminController.createCategory,
 );
 
+router.delete(
+  "/category/:id",
+  authMiddleware(UserRole.ADMIN),
+  AdminController.deleteCategory,
+);
 export const adminRouter: Router = router;

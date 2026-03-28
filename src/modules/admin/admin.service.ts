@@ -51,10 +51,17 @@ const createCategory = (input: { name: string }) => {
   });
 };
 
+const deleteCategory = (id: string) => {
+  return prisma.category.delete({
+    where: { id },
+  });
+};
+
 export const AdminService = {
   getAllUsers,
   getAllCategories,
   createCategory,
   getAllBookings,
   updateUserStatus,
+  deleteCategory
 };
