@@ -2,14 +2,18 @@ import { Request, Response } from "express";
 import { TutorSubjectService } from "./tutorSubject.service.js";
 
 const addSubjects = async (req: Request, res: Response) => {
-  const userId = req.user!.id;
+  try {
+    const userId = req.user!.id;
 
-  const result = await TutorSubjectService.addSubjects(
-    userId,
-    req.body.categoryIds,
-  );
+    const result = await TutorSubjectService.addSubjects(
+      userId,
+      req.body.categoryIds,
+    );
 
-  res.json({ success: true, data: result });
+    res.json({ success: true, data: result });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
 };
 
 const getSubjects = async (req: Request, res: Response) => {

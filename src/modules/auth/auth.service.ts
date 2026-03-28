@@ -7,6 +7,7 @@ const register = async (input: {
   email: string;
   password: string;
   phone?: string;
+  image?: string;
   role?: "STUDENT" | "TUTOR";
 }) => {
   const existing = await prisma.user.findUnique({
@@ -25,6 +26,7 @@ const register = async (input: {
       email: input.email,
       password: hashedPassword,
       phone: input.phone,
+      image: input.image,
       role: input.role ?? "STUDENT",
     },
     select: {
@@ -87,4 +89,20 @@ const login = async (input: { email: string; password: string }) => {
   };
 };
 
-export const AuthService = { register, login };
+const getMe = async (id: string) => {
+  return prisma.user.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      role: true,
+      status: true,
+      phone: true,
+      createdAt: true,
+    },
+  });
+};
+
+export const AuthService = { register, login, getMe };

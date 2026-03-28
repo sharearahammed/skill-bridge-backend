@@ -1,6 +1,5 @@
 import { prisma } from "../../lib/prisma.js";
 
-
 const createOrUpdateProfile = async (
   userId: string,
   input: {
@@ -54,7 +53,7 @@ const createOrUpdateProfile = async (
 
 const createAvailability = async (userId: string, input: any) => {
   const tutor = await prisma.tutorProfile.findUnique({ where: { userId } });
-  if (!tutor) throw new Error("Tutor profile not found");
+  if (!tutor) throw new Error("Please create your profile first");
   return prisma.availability.create({
     data: {
       tutorId: tutor.userId,
@@ -75,7 +74,10 @@ const getTutorSessions = async (userId: string) => {
   });
 };
 
-const getTutorReviewsByCategory = async (tutorId: string, categoryId: string) => {
+const getTutorReviewsByCategory = async (
+  tutorId: string,
+  categoryId: string,
+) => {
   return prisma.review.findMany({
     where: {
       tutorId,
@@ -94,5 +96,5 @@ export const TutorService = {
   createOrUpdateProfile,
   createAvailability,
   getTutorSessions,
-  getTutorReviewsByCategory
+  getTutorReviewsByCategory,
 };

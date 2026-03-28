@@ -78,7 +78,6 @@ import { tutorsRouter } from "./modules/tutors/tutors.router.js";
 import { StudentProfileRouter } from "./modules/student profile/student.route.js";
 import { authRouter } from "./modules/auth/auth.router.js";
 
-
 const app: Application = express();
 
 // increase JSON payload limit
@@ -91,6 +90,7 @@ const allowedOrigins: string[] = [
   "http://localhost:4000",
   "https://skill-bridge-frontend-uk5b.onrender.com",
   "https://skill-bridge-10.netlify.app",
+  "https://skill-bridge-backend-fprg.onrender.com",
 ].filter((o): o is string => Boolean(o));
 
 app.use(

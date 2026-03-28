@@ -21,7 +21,11 @@ const login = async (req: Request, res: Response) => {
 
 const getMe = async (req: Request, res: Response) => {
   try {
-    res.json({ success: true, data: req.user });
+    const user = await AuthService.getMe(req.user!.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+    res.json({ success: true, data: user });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
   }

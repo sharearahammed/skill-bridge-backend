@@ -5,7 +5,7 @@ const addSubjects = async (userId: string, categoryIds: string[]) => {
     where: { userId },
   });
 
-  if (!tutor) throw new Error("Tutor profile not found");
+  if (!tutor) throw new Error("Please create your profile first");
 
   const subjectsToAdd = categoryIds.map((id: string) => ({
     tutorId: tutor.userId,

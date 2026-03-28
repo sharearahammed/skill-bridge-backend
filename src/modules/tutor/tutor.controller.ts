@@ -9,9 +9,13 @@ const createOrUpdateProfile = async (req: Request, res: Response) => {
 };
 
 const createAvailability = async (req: Request, res: Response) => {
-  const userId = req.user!.id;
-  const slot = await TutorService.createAvailability(userId, req.body);
-  res.json({ success: true, data: slot });
+  try {
+    const userId = req.user!.id;
+    const slot = await TutorService.createAvailability(userId, req.body);
+    res.json({ success: true, data: slot });
+  } catch (err: any) {
+    res.status(400).json({ success: false, message: err.message });
+  }
 };
 
 const getTutorSessions = async (req: Request, res: Response) => {
