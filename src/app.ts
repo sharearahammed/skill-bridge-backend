@@ -21,6 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 const allowedOrigins: string[] = [
   process.env.APP_URL,
   "http://localhost:3000",
+  "http://localhost:4000",
   "https://skill-bridge-frontend-uk5b.onrender.com",
   "https://skill-bridge-10.netlify.app",
 ].filter((o): o is string => Boolean(o));
