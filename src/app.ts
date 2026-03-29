@@ -77,6 +77,8 @@ import { reviewRouter } from "./modules/review/review.route.js";
 import { tutorsRouter } from "./modules/tutors/tutors.router.js";
 import { StudentProfileRouter } from "./modules/student profile/student.route.js";
 import { authRouter } from "./modules/auth/auth.router.js";
+import passport from "./lib/passport.js"
+import { googleAuthRouter } from "./modules/auth/googleAuth.router.js";
 
 const app: Application = express();
 
@@ -105,10 +107,15 @@ app.use(
   }),
 );
 
+// passport initialize
+app.use(passport.initialize());
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// Google auth routes
+app.use("/api/auth", googleAuthRouter);
 app.use("/api/auth", authRouter);
 app.use("/admin", adminRouter);
 app.use("/category", CategoryRouter);
