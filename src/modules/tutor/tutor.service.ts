@@ -64,14 +64,30 @@ const createAvailability = async (userId: string, input: any) => {
   });
 };
 
-const getTutorSessions = async (userId: string) => {
+const getTutorSessions = async (userId: string, page: number = 1) => {
+  const limit = 5;
+  const skip = (page - 1) * limit;
+
   const tutor = await prisma.tutorProfile.findUnique({ where: { userId } });
   if (!tutor) throw new Error("Tutor profile not found");
-  return prisma.booking.findMany({
-    where: { tutorId: tutor.userId },
-    include: { student: true, availability: true },
-    orderBy: { createdAt: "desc" },
-  });
+
+  const [sessions, total] = await Promise.all([
+    prisma.booking.findMany({
+      where: { tutorId: tutor.userId },
+      include: { student: true, availability: true },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    prisma.booking.count({ where: { tutorId: tutor.userId } }),
+  ]);
+
+  return {
+    sessions,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 const getTutorReviewsByCategory = async (

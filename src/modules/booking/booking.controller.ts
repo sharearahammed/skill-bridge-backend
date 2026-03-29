@@ -37,9 +37,14 @@ const updateBookingStatus = async (req: Request, res: Response) => {
 };
 
 const myBookings = async (req: Request, res: Response) => {
-  const userId = req.user!.id;
-  const bookings = await BookingService.getUserBookings(userId);
-  res.json({ success: true, data: bookings });
+  try {
+    const userId = req.user!.id;
+    const page = parseInt(req.query.page as string) || 1;
+    const result = await BookingService.getUserBookings(userId, page);
+    res.json({ success: true, data: result });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
 const attendSessionController = async (req: Request, res: Response) => {

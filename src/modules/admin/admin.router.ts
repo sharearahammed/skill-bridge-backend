@@ -12,6 +12,7 @@ router.get(
   authMiddleware(UserRole.ADMIN),
   AdminController.getAllUsers,
 );
+
 router.patch(
   "/user/:id/status",
   authMiddleware(UserRole.ADMIN),

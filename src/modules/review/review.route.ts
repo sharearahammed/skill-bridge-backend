@@ -22,7 +22,7 @@ router.patch(
 // Get tutor reviews
 router.get(
   "/tutor/:tutorId/:categoryId/reviews",
-  authMiddleware(UserRole.TUTOR), // optionally protect route
+  authMiddleware(UserRole.TUTOR),
   ReviewController.getTutorReviewsByCategory,
 );
 

@@ -4,8 +4,9 @@ import { AdminService } from "./admin.service.js";
 
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const users = await AdminService.getAllUsers();
-    res.json({ success: true, data: users });
+    const page = parseInt(req.query.page as string) || 1;
+    const result = await AdminService.getAllUsers(page);
+    res.json({ success: true, data: result });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -33,8 +34,22 @@ const updateUserStatus = async (req: Request, res: Response) => {
 
 const getAllBookings = async (req: Request, res: Response) => {
   try {
-    const bookings = await AdminService.getAllBookings();
-    res.json({ success: true, data: bookings });
+    const page = Math.max(1, parseInt(req.query.page as string) || 1);
+    const limit = Math.max(
+      1,
+      Math.min(100, parseInt(req.query.limit as string) || 10),
+    );
+    const { data, total } = await AdminService.getAllBookings(page, limit);
+    res.json({
+      success: true,
+      data,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (err: any) {
     res.status(500).json({ success: false, message: err.message });
   }

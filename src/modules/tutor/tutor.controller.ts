@@ -19,9 +19,14 @@ const createAvailability = async (req: Request, res: Response) => {
 };
 
 const getTutorSessions = async (req: Request, res: Response) => {
-  const userId = req.user!.id;
-  const sessions = await TutorService.getTutorSessions(userId);
-  res.json({ success: true, data: sessions });
+  try {
+    const userId = req.user!.id;
+    const page = parseInt(req.query.page as string) || 1;
+    const result = await TutorService.getTutorSessions(userId, page);
+    res.json({ success: true, data: result });
+  } catch (err: any) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
 const getTutorReviews = async (req: Request, res: Response) => {

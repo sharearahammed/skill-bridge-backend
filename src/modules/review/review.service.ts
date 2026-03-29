@@ -100,17 +100,30 @@ const updateReview = async (
 const getTutorReviewsByCategory = async (
   tutorId: string,
   categoryId: string,
+  page: number = 1,
 ) => {
-  return prisma.review.findMany({
-    where: {
-      tutorId,
-      categoryId, // filter by category
-    },
-    include: {
-      student: { select: { id: true, name: true, email: true, image: true } },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+  const limit = 5;
+  const skip = (page - 1) * limit;
+
+  const [reviews, total] = await Promise.all([
+    prisma.review.findMany({
+      where: { tutorId, categoryId },
+      include: {
+        student: { select: { id: true, name: true, email: true, image: true } },
+      },
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    prisma.review.count({ where: { tutorId, categoryId } }),
+  ]);
+
+  return {
+    reviews,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 // Get a single review by reviewId

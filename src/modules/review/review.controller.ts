@@ -84,7 +84,6 @@ const getTutorReviewsByCategory = async (req: Request, res: Response) => {
   try {
     let { tutorId, categoryId } = req.params;
 
-    // Validate undefined
     if (!tutorId || !categoryId) {
       return res.status(400).json({
         success: false,
@@ -92,28 +91,24 @@ const getTutorReviewsByCategory = async (req: Request, res: Response) => {
       });
     }
 
-    // Handle array case if someone sends multiple params
     if (Array.isArray(tutorId)) tutorId = tutorId[0];
     if (Array.isArray(categoryId)) categoryId = categoryId[0];
 
-    // Explicitly assert as string so TS knows it's not undefined
-    const parsedTutorId: string = tutorId as string;
-    const parsedCategoryId: string = categoryId as string;
+    const page = parseInt(req.query.page as string) || 1;
 
-    const reviews = await ReviewService.getTutorReviewsByCategory(
-      parsedTutorId,
-      parsedCategoryId,
+    const result = await ReviewService.getTutorReviewsByCategory(
+      tutorId as string,
+      categoryId as string,
+      page,
     );
 
-    res.json({ success: true, data: reviews });
+    res.json({ success: true, data: result });
   } catch (err: unknown) {
     console.error(err);
     if (err instanceof Error) {
       res.status(500).json({ success: false, message: err.message });
     } else {
-      res
-        .status(500)
-        .json({ success: false, message: "Internal server error" });
+      res.status(500).json({ success: false, message: "Internal server error" });
     }
   }
 };

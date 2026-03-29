@@ -85,24 +85,39 @@ const updateBookingStatus = async (
   });
 };
 
-const getUserBookings = async (userId: string) => {
-  return prisma.booking.findMany({
-    where: { studentId: userId },
-    include: {
-      tutor: {
-        include: {
-          user: true,
-          reviews: {
-            where: {
-              studentId: userId,
+const getUserBookings = async (userId: string, page: number = 1) => {
+  const limit = 5;
+  const skip = (page - 1) * limit;
+
+  const [bookings, total] = await Promise.all([
+    prisma.booking.findMany({
+      where: { studentId: userId },
+      include: {
+        tutor: {
+          include: {
+            user: true,
+            reviews: {
+              where: {
+                studentId: userId,
+              },
             },
           },
         },
+        availability: true,
       },
-      availability: true,
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+      skip,
+      take: limit,
+    }),
+    prisma.booking.count({ where: { studentId: userId } }),
+  ]);
+
+  return {
+    bookings,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 // Mark session as attended
